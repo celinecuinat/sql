@@ -54,7 +54,8 @@ The store wants to keep customer addresses. Propose two architectures for the CU
 **HINT:** search type 1 vs type 2 slowly changing dimensions. 
 
 ```
-Your answer...
+A slowly changing dimensions (SCD) type 1 table will overwrite the date if the customer has a new address. It can contain customer_id, some columns keeping the address details (for example street number, street name, etc) and a column keeping track of the date on which the address was last updated (last_update). When a change is implemented, the entire row will be modified.
+SCD type 2 table will keep track of all previous addresses of the customer. Instead of the last_update column, it could have a start and end date columns, and/or a column of boolean indicating whether this is the customer current address. When a customer changes address, an end date would be added to the previous address row, and a new row will be created.
 ```
 
 ***
