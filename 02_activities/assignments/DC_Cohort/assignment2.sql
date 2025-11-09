@@ -20,6 +20,9 @@ The `||` values concatenate the columns into strings.
 Edit the appropriate columns -- you're making two edits -- and the NULL rows will be fixed. 
 All the other rows will remain the same.) */
 
+SELECT 
+product_name || ', ' || coalesce(product_size, ' ')|| ' (' || coalesce(product_qty_type, 'unit') || ')'
+FROM product;
 
 
 --Windowed Functions
@@ -32,17 +35,37 @@ each new market date for each customer, or select only the unique market dates p
 (without purchase details) and number those visits. 
 HINT: One of these approaches uses ROW_NUMBER() and one uses DENSE_RANK(). */
 
-
+SELECT customer_id, customer_visit_number, market_date
+FROM(
+	SELECT  DISTINCT market_date
+	,customer_id
+	,dense_rank() OVER(PARTITION BY customer_id ORDER BY market_date) as customer_visit_number
+	FROM customer_purchases
+)
+ORDER BY customer_id ASC;
 
 /* 2. Reverse the numbering of the query from a part so each customer’s most recent visit is labeled 1, 
 then write another query that uses this one as a subquery (or temp table) and filters the results to 
 only the customer’s most recent visit. */
-
-
+SELECT customer_id, market_date
+FROM(
+	SELECT  DISTINCT market_date
+	,customer_id
+	,dense_rank() OVER(PARTITION BY customer_id ORDER BY market_date DESC) as customer_visit_number
+	FROM customer_purchases
+) x
+WHERE x.customer_visit_number = 1
+ORDER BY customer_id ASC;
 
 /* 3. Using a COUNT() window function, include a value along with each row of the 
 customer_purchases table that indicates how many different times that customer has purchased that product_id. */
-
+SELECT *
+FROM(
+	SELECT  DISTINCT *
+	,count() OVER(PARTITION BY customer_id, product_id ORDER BY product_id) as product_purchase_number
+	FROM customer_purchases
+)
+ORDER BY customer_id ASC;
 
 
 -- String manipulations
@@ -56,12 +79,34 @@ Remove any trailing or leading whitespaces. Don't just use a case statement for 
 | Habanero Peppers - Organic | Organic     |
 
 Hint: you might need to use INSTR(product_name,'-') to find the hyphens. INSTR will help split the column. */
-
+SELECT
+  CASE
+    WHEN INSTR(product_name, '- ') 
+      THEN TRIM(SUBSTR(product_name, 1, INSTR(product_name, '- ') - 1))
+    ELSE product_name
+  END AS product_name,
+  CASE
+    WHEN INSTR(product_name, '- ') 
+      THEN TRIM(SUBSTR(product_name, INSTR(product_name, '- ') + 2))
+    ELSE ' '
+  END AS description
+FROM product;
 
 
 /* 2. Filter the query to show any product_size value that contain a number with REGEXP. */
-
-
+SELECT
+  CASE
+    WHEN INSTR(product_name, '- ') 
+      THEN TRIM(SUBSTR(product_name, 1, INSTR(product_name, '- ') - 1))
+    ELSE product_name
+  END AS product_name,
+  CASE
+    WHEN INSTR(product_name, '- ') 
+      THEN TRIM(SUBSTR(product_name, INSTR(product_name, '- ') + 2))
+    ELSE ' '
+  END AS description
+FROM product
+WHERE product_size REGEXP '\d'
 
 -- UNION
 /* 1. Using a UNION, write a query that displays the market dates with the highest and lowest total sales.

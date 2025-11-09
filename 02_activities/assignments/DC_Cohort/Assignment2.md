@@ -184,5 +184,7 @@ Consider, for example, concepts of labour, bias, LLM proliferation, moderating c
 
 
 ```
-Your thoughts...
+This story demonstrate that neural nets and datasets used to train machine learning models are not created by robots, but by people. It uses the example of ImageNet to explain all the steps that were actually done manually by people, which were necessary to get to the creation of such dataset.
+There are a few ethical issues that I can identify along this process. The first is recognition of work / intellectual property. The development of such data relies on other tools/books/files created by others, which are not necessarily recognized in the final product. This is the case of the creators of WorkNet for example, but also of most data what can be "extracted" from internet to feed AI models. Ethical issues around the labour used at all steps to allow the development of such machine learning tools is a concern too. This include lots of graduate students working on these projects, but also people recruited to do infinite tasks at a very low wage. It is hard to define what can be seen as exploitation of people in need of a job and money. In addition to unknown working conditions, the tasks asked to these people is not necessarily regulated and may expose them to violent content, as highlighted by the article. The impact of these jobs on workers mental health is a question that should be raised. Finally, this story really highlights the link between our society and how the AI tools are trained and developed. The datasets used to train them are developped by people, therefore, they can only be biased towards people cultures and believes, which is a big issue when considering that most people see AI tools as neutral or objective.
+
 ```
