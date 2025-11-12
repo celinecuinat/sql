@@ -244,16 +244,6 @@ When you have all of these components, you can run the update statement. */
 
 ALTER TABLE product_units
 ADD current_quantity INT;
----how to get the last quantity per product:
-SELECT product_id, quantity
-FROM(
-	SELECT  DISTINCT market_date
-	,product_id
-	,quantity
-	,dense_rank() OVER(PARTITION BY product_id ORDER BY market_date DESC) as ordered_dates_DESC
-	FROM vendor_inventory
-) x
-WHERE x.ordered_dates_DESC = 1;
 
 ---Its best to build your query from inside out. The hint says " SET current_quantity = (...your select statement...), remembering that WHERE can only accommodate one column. "
 --As Thomas suggested, you have to join product_units table (with vendor_inventory) 
